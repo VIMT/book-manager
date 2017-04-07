@@ -1,10 +1,12 @@
 package me.vimt.book.service;
 
 
+import me.vimt.book.entity.BookEntity;
 import me.vimt.book.entity.UserEntity;
 import me.vimt.book.util.exception.ExistException;
 import me.vimt.book.util.exception.NotExistException;
 import me.vimt.book.util.exception.ParamException;
+import me.vimt.book.util.exception.StatusErrorException;
 
 /**
  * User: Tao
@@ -20,5 +22,11 @@ public interface UserService {
 
     UserEntity verify(String username, String password) throws ParamException, NotExistException;
 
+    UserEntity getUser(int id) throws NotExistException;
 
+    void read(int userId, BookEntity book);
+
+    void borrow(int userId, BookEntity book);
+
+    void returnBook(int userId, BookEntity book);
 }

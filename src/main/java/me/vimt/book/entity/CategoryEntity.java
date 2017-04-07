@@ -1,5 +1,7 @@
 package me.vimt.book.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -47,6 +49,7 @@ public class CategoryEntity {
         this.name = name;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     public Set<BookEntity> getBooks() {
         return books;

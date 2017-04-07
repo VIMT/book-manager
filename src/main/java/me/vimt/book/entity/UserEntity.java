@@ -19,6 +19,8 @@ public class UserEntity {
     private String password;
     private String salt;
     private Set<BookEntity> books;
+    private boolean admin;
+    private Set<BookEntity> borrowedBooks;
 
 
     public boolean verifyPassword(String password) {
@@ -71,6 +73,7 @@ public class UserEntity {
         this.email = email;
     }
 
+    @JsonIgnore
     @Column(length = 40, nullable = false)
     public String getPassword() {
         return password;
@@ -90,12 +93,33 @@ public class UserEntity {
         this.salt = salt;
     }
 
-    @ManyToMany(mappedBy = "users")
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_book", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     public Set<BookEntity> getBooks() {
         return books;
     }
 
     public void setBooks(Set<BookEntity> books) {
         this.books = books;
+    }
+
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL)
+    public Set<BookEntity> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void setBorrowedBooks(Set<BookEntity> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
     }
 }

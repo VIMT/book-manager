@@ -1,16 +1,18 @@
 package me.vimt.book.service.impl;
 
 
+import me.vimt.book.entity.BookEntity;
 import me.vimt.book.entity.UserEntity;
+import me.vimt.book.repository.BookRepository;
 import me.vimt.book.repository.UserRepository;
 import me.vimt.book.service.UserService;
-import me.vimt.book.util.exception.ExistException;
-import me.vimt.book.util.exception.NotExistException;
-import me.vimt.book.util.exception.ParamException;
+import me.vimt.book.util.exception.*;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
 
 /**
  * User: Tao
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    HttpServletRequest request;
+    BookRepository bookRepository;
 
     @Override
     public void createUser(UserEntity user) throws ExistException {
@@ -52,13 +54,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity verify(String email, String password) throws NotExistException, ParamException {
-        UserEntity user = userRepository.getFirstByEmail(email);
+    public UserEntity verify(String username, String password) throws NotExistException, ParamException {
+        UserEntity user = userRepository.getFirstByUsername(username);
         if (user == null)
-            throw new NotExistException("Not Found!");
+            throw new NotExistException("该用户不存在");
         if (!user.verifyPassword(password))
             throw new ParamException("密码错误");
         return user;
+    }
+
+    @Override
+    public UserEntity getUser(int id) throws NotExistException {
+        UserEntity user = userRepository.findOne(id);
+        if (user == null)
+            throw new NotExistException("Not Found!");
+        return user;
+    }
+
+    @Override
+    public void read(int userId, BookEntity book) {
+        UserEntity user = userRepository.findOne(userId);
+        user.getBooks().add(book);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void borrow(int userId, BookEntity book) {
+        UserEntity user = userRepository.findOne(userId);
+        book.setBorrower(user);
+        read(userId, book);
+        bookRepository.save(book);
+    }
+
+    @Override
+    public void returnBook(int userId, BookEntity book) {
+        book.setBorrower(null);
+        bookRepository.save(book);
     }
 
 }

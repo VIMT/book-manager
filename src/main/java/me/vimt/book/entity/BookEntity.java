@@ -1,6 +1,8 @@
 package me.vimt.book.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -22,8 +24,10 @@ public class BookEntity {
     private CategoryEntity category;
     private int price;
     private int page;
+    private String description;
     private String ISBN;
     private Set<UserEntity> users;
+    private UserEntity borrower;
 
 
     //----getter setter constructor ---
@@ -31,15 +35,19 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(String name, String author, String publisher, CategoryEntity category, int price, int page, String ISBN) {
+    public BookEntity(int id, String name, String author, String publisher, CategoryEntity category, int price, int page, String description, String ISBN, Set<UserEntity> users) {
+        this.id = id;
         this.name = name;
         this.author = author;
         this.publisher = publisher;
         this.category = category;
         this.price = price;
         this.page = page;
+        this.description = description;
         this.ISBN = ISBN;
+        this.users = users;
     }
+
 
     @Id
     @GeneratedValue
@@ -104,6 +112,15 @@ public class BookEntity {
         this.page = page;
     }
 
+    @Column(columnDefinition = "TEXT")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Column(length = 20, nullable = false)
     public String getISBN() {
         return ISBN;
@@ -113,13 +130,23 @@ public class BookEntity {
         this.ISBN = ISBN;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_book", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
+    @JsonIgnore
+    @ManyToMany(mappedBy = "books")
     public Set<UserEntity> getUsers() {
         return users;
     }
 
     public void setUsers(Set<UserEntity> users) {
         this.users = users;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "borrower_id")
+    public UserEntity getBorrower() {
+        return borrower;
+    }
+
+    public void setBorrower(UserEntity borrower) {
+        this.borrower = borrower;
     }
 }

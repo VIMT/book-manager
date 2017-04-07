@@ -1,11 +1,12 @@
 package me.vimt.book.service.impl;
 
 import me.vimt.book.entity.BookEntity;
+import me.vimt.book.entity.CategoryEntity;
 import me.vimt.book.repository.BookRepository;
+import me.vimt.book.repository.CategoryRepository;
 import me.vimt.book.service.BookService;
 import me.vimt.book.util.exception.ExistException;
 import me.vimt.book.util.exception.NotExistException;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +23,13 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
     @Autowired
-    HttpServletRequest request;
+    private CategoryRepository categoryRepository;
 
 
     @Override
     public void addBook(BookEntity book) throws ExistException {
-        //TODO 话说新来的book id是多少？
         bookRepository.save(book);
     }
 
@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookEntity getBook(int id) throws NotExistException {
-        BookEntity one = bookRepository.getOne(id);
+        BookEntity one = bookRepository.findOne(id);
         if (one == null) throw new NotExistException("未找到id为" + id + "的书");
         return one;
     }

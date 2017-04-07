@@ -28,7 +28,7 @@ public class MyExceptionHandler {
             return new Result(ResponseCode.PARAM_ERROR, e.getMessage());
         } else if (e instanceof PermissionException) {
             return new Result(ResponseCode.FORBIDDEN_ERROR, e.getMessage());
-        } else if (e instanceof StateAllowException) {
+        } else if (e instanceof StatusErrorException) {
             return new Result(ResponseCode.STATE_ERROR, e.getMessage());
         } else {
             return new Result(ResponseCode.UNKOWN_ERROR, e.getMessage());
