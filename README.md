@@ -2,6 +2,6 @@
 
 ## 模块介绍
 
-### SpringBoot
+### SpringBoot + Spring Data JPA
 
-### Angular
+### Material Design Lite + Vue + JQuery
