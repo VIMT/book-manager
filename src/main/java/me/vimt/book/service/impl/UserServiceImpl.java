@@ -7,12 +7,11 @@ import me.vimt.book.repository.BookRepository;
 import me.vimt.book.repository.UserRepository;
 import me.vimt.book.service.UserService;
 import me.vimt.book.util.exception.*;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.List;
 
 /**
  * User: Tao
@@ -92,4 +91,8 @@ public class UserServiceImpl implements UserService {
         bookRepository.save(book);
     }
 
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
+    }
 }

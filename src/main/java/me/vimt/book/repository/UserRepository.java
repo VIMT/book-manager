@@ -2,6 +2,10 @@ package me.vimt.book.repository;
 
 import me.vimt.book.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: Tao

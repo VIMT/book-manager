@@ -18,3 +18,11 @@
     margin: 0;
     padding: 20px 0;
 }
+
+.width-input {
+    width: 400px;
+}
+
+.height-input {
+    height: 100px;
+}

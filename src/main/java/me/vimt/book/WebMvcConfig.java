@@ -1,7 +1,7 @@
 package me.vimt.book;
 
+import me.vimt.book.interceptor.AdminInterceptor;
 import me.vimt.book.interceptor.UserInterceptor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -22,14 +22,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("forward: /index.html");
         registry.addViewController("/login").setViewName("forward: /login.html");
         registry.addViewController("/register").setViewName("forward: /register.html");
+        registry.addViewController("/admin").setViewName("forward: /admin.html");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new UserInterceptor()).addPathPatterns("/*")
-                .excludePathPatterns("/")
-                .excludePathPatterns("/login")
-                .excludePathPatterns("/register");
+        registry.addInterceptor(new UserInterceptor()).addPathPatterns("/api/**");
+        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/api/admin/**");
         super.addInterceptors(registry);
     }
 }

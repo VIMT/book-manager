@@ -6,7 +6,8 @@ import me.vimt.book.entity.UserEntity;
 import me.vimt.book.util.exception.ExistException;
 import me.vimt.book.util.exception.NotExistException;
 import me.vimt.book.util.exception.ParamException;
-import me.vimt.book.util.exception.StatusErrorException;
+
+import java.util.List;
 
 /**
  * User: Tao
@@ -29,4 +30,6 @@ public interface UserService {
     void borrow(int userId, BookEntity book);
 
     void returnBook(int userId, BookEntity book);
+
+    List<UserEntity> getAllUsers();
 }

@@ -14,7 +14,7 @@ var app = new Vue({
             $("#book-table").hide();
             $("#see-form").show();
             $.getJSON({
-                url: "/books/" + bookId,
+                url: "/api/books/" + bookId,
                 success: function (data) {
                     data.body.canRead = true;
                     data.body.canReturn = false;
@@ -42,7 +42,7 @@ var app = new Vue({
 
         borrowBook: function () {
             $.ajax({
-                url: "/api/borrow/" + $("#see-id").val(),
+                url: "/api/books/" + $("#see-id").val() + "/borrow",
                 dataType: "json",
                 type: "POST",
                 success: function (data) {
@@ -61,7 +61,7 @@ var app = new Vue({
 
         readBook: function () {
             $.ajax({
-                url: "/api/read/" + $("#see-id").val(),
+                url: "/api/books/" + $("#see-id").val() + "/read",
                 dataType: "json",
                 type: "POST",
                 success: function (data) {
@@ -101,7 +101,7 @@ var my = new Vue({
     methods: {
         returnBook: function (bookId) {
             $.ajax({
-                url: "/api/return/" + bookId,
+                url: "/api/books/" + bookId + "/return",
                 dataType: "json",
                 type: "POST",
                 success: function (data) {
@@ -120,21 +120,15 @@ var my = new Vue({
     }
 });
 
-function getUrlParam(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-    if (r != null) return unescape(r[2]);
-    return null; //返回参数值
-}
 
 function getBooks() {
     $.getJSON({
-        url: "/books/", dataType: "json",
+        url: "/api/books/", dataType: "json",
         success: function (data) {
             if (data.code === 0) {
                 data.body.forEach(function (book) {
                     if (book.borrower === null) book.borrower = "可借";
-                    else book.borrower = "借出";
+                    else book.borrower = "已借出";
                 });
                 app.books = data.body
             } else {
@@ -152,12 +146,12 @@ var scroll_stop = false;
 var page_get = [];
 function getMoreBooks() {
     $.getJSON({
-        url: "/books/" + "?page=" + page, dataType: "json",
+        url: "/api/books/" + "?page=" + page, dataType: "json",
         success: function (data) {
             if (data.code === 0) {
                 data.body.forEach(function (book) {
                     if (book.borrower === null) book.borrower = "可借";
-                    else book.borrower = "借出";
+                    else book.borrower = "已借出";
                 });
                 app.books = app.books.concat(data.body);
                 if (data.body.length < 20) scroll_stop = true;
@@ -174,7 +168,7 @@ function getMoreBooks() {
 
 function getBorrowBooks() {
     $.getJSON({
-        url: "/api/books?borrow=true", dataType: "json",
+        url: "/api/books/my?borrow=true", dataType: "json",
         success: function (data) {
             if (data.code === 0) {
                 my.borrowBooks = data.body
@@ -189,7 +183,7 @@ function getBorrowBooks() {
 }
 function getReadBooks() {
     $.getJSON({
-        url: "/api/books?read=true", dataType: "json",
+        url: "/api/books/my?read=true", dataType: "json",
         success: function (data) {
             if (data.code === 0) {
                 my.readBooks = data.body
@@ -229,7 +223,7 @@ $(function () {
 
     getBooks();
     changeMain.current = $("#app");
-    changeMain("app")
+    changeMain("app");
 
     $("#app").scroll(function () {
         var $this = $(this),

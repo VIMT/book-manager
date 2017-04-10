@@ -37,6 +37,7 @@ public class UserController {
         UserEntity user;
         user = userService.verify(username, password);
         session.setAttribute("user", user.getId());
+        if(user.isAdmin()) session.setAttribute("admin", true);
         return new Result(ResponseCode.SUCCESS, "");
     }
 
@@ -50,14 +51,6 @@ public class UserController {
     public Result createUser(UserEntity user) throws ExistException {
 
         userService.createUser(user);
-        return new Result(ResponseCode.SUCCESS, "");
-    }
-
-    @RequestMapping(value = "/password/reset", method = RequestMethod.POST)
-    public Result resetPassword(@RequestParam String email,
-                                @RequestParam String newPassword) throws NotExistException {
-
-        userService.resetPassword(email, newPassword);
         return new Result(ResponseCode.SUCCESS, "");
     }
 

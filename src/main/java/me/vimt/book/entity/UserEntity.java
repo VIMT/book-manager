@@ -4,6 +4,7 @@ package me.vimt.book.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.vimt.book.util.MD5Util;
 import me.vimt.book.util.RandomUtil;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -122,4 +123,5 @@ public class UserEntity {
     public void setBorrowedBooks(Set<BookEntity> borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
+
 }
