@@ -7,27 +7,27 @@ package me.vimt.book.config;
  * Description:
  */
 public enum ResponseCode {
-    //成功
+    //0成功
     SUCCESS,
-    //请求参数异常
+    //1请求参数异常
     PARAM_ERROR,
-    // 禁止访问(权限不够)
+    //2禁止访问(权限不够)
     FORBIDDEN_ERROR,
-    // 已经存在或者不存在
+    //3已经存在或者不存在
     EXIST_ERROR,
-    // 服务器错误
+    //4服务器错误
     SERVER_ERROR,
-    // 数据库错误
+    //5数据库错误
     DB_ERROR,
-    // 未知错误
+    //6未知错误
     UNKOWN_ERROR,
-    // 状态异常
+    //7状态异常
     STATE_ERROR,
-    // 超出限制
+    //8超出限制
     LIMITION_ERROR,
-    // 未登录
+    //9未登录
     NOT_LOGIN,
-    //失败
+    //10失败
     FAILURE
 
 
