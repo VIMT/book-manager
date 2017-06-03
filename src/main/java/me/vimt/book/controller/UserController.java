@@ -13,6 +13,7 @@ import me.vimt.book.util.exception.StatusErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
 
@@ -33,11 +34,12 @@ public class UserController {
     private HttpSession session;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Result login(@RequestParam String username, @RequestParam String password) throws NotExistException, ParamException {
+    public Result login(@RequestParam String username, @RequestParam String password, HttpServletRequest request) throws NotExistException, ParamException {
+        HttpSession session = request.getSession();
         UserEntity user;
         user = userService.verify(username, password);
-        session.setAttribute("user", user.getId());
-        if(user.isAdmin()) session.setAttribute("admin", true);
+        this.session.setAttribute("user", user.getId());
+        if(user.isAdmin()) this.session.setAttribute("admin", true);
         return new Result(ResponseCode.SUCCESS, "");
     }
 
